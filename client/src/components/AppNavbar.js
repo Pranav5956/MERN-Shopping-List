@@ -6,16 +6,45 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
   Container,
 } from "reactstrap";
+import { useSelector } from "react-redux";
+
+import RegisterModal from "./auth/RegisterModal";
+import LoginModal from "./auth/LoginModal";
+import Logout from "./auth/Logout";
 
 function AppNavbar() {
   const [isOpen, setIsOpen] = useState(false);
+  var isAuthenticated = useSelector((state) => state.auth).isAuthenticated;
+  var username = useSelector((state) => state.auth).user?.name;
 
   const toggle = () => {
     setIsOpen(!isOpen);
   };
+
+  const guestLinks = (
+    <Fragment>
+      <NavItem>
+        <LoginModal />
+      </NavItem>
+      <NavItem>
+        <RegisterModal />
+      </NavItem>
+    </Fragment>
+  );
+  const authLinks = (
+    <Fragment>
+      <NavItem>
+        <span className="navbar-text mr-3">
+          <strong>{username && `Welcome ${username}`}</strong>
+        </span>
+      </NavItem>
+      <NavItem>
+        <Logout />
+      </NavItem>
+    </Fragment>
+  );
 
   return (
     <Fragment>
@@ -25,9 +54,7 @@ function AppNavbar() {
           <NavbarToggler onClick={toggle}></NavbarToggler>
           <Collapse isOpen={isOpen} navbar>
             <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink href="/">Github</NavLink>
-              </NavItem>
+              {isAuthenticated ? authLinks : guestLinks}
             </Nav>
           </Collapse>
         </Container>

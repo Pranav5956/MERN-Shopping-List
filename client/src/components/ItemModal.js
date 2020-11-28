@@ -1,4 +1,4 @@
-import React, { useState, useRef, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import {
   Button,
   Modal,
@@ -9,13 +9,15 @@ import {
   Label,
   Input,
 } from "reactstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItemAction } from "../actions/itemActions";
 
 function ItemModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const dispatch = useDispatch();
+
+  var isAuthenticated = useSelector((state) => state.auth).isAuthenticated;
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -34,12 +36,16 @@ function ItemModal() {
 
   return (
     <Fragment>
-      <Button
-        color="dark"
-        style={{ marginBottom: "2rem" }}
-        onClick={toggleModal}>
-        Add Item
-      </Button>
+      {isAuthenticated ? (
+        <Button
+          color="dark"
+          style={{ marginBottom: "2rem" }}
+          onClick={toggleModal}>
+          Add Item
+        </Button>
+      ) : (
+        <h4 className="mb-3 ml-4">Please log in to manage items</h4>
+      )}
 
       <Modal isOpen={isOpen} toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>Add To Shopping List</ModalHeader>

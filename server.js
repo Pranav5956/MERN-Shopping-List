@@ -1,21 +1,22 @@
 import express from "express";
 import mongoose from "mongoose";
-import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import path from "path";
 
 import items from "./routes/api/items.js";
+import users from "./routes/api/users.js";
+import auth from "./routes/api/auth.js";
 
 dotenv.config();
 
 const app = express();
 
 // Bodyparser middleware
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.REACT_APP_MONGODB_CONNECTION_STRING, {
+  .connect(process.env.MONGODB_CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -25,6 +26,8 @@ mongoose
 
 // Use routes
 app.use("/api/items", items);
+app.use("/api/users", users);
+app.use("/api/auth", auth);
 
 // Serve static assets if we are in production
 if (process.env.NODE_ENV === "production") {
