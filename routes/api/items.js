@@ -8,8 +8,8 @@ const router = express.Router();
 // @route  GET api/items
 // @desc   Get all items
 // @access Public
-router.get("/", (req, res) => {
-  Item.find()
+router.get("/", auth, (req, res) => {
+  Item.find({ addedBy: req.user.id })
     .sort({ date: -1 })
     .then((items) => res.json(items));
 });
@@ -20,17 +20,25 @@ router.get("/", (req, res) => {
 router.post("/", auth, (req, res) => {
   const newItem = new Item({
     name: req.body.name,
+    addedBy: req.user.id,
   });
-
   newItem.save().then((item) => res.json(item));
+});
+
+// @route  PUT api/items/:id
+// @desc   Update an item
+// @access Private
+router.put("/:id", auth, (req, res) => {
+  Item.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then((item) => res.json(item))
+    .catch((err) => res.status(404).json({ success: false }));
 });
 
 // @route  DELETE api/items/:id
 // @desc   Delete an item
 // @access Private
 router.delete("/:id", auth, (req, res) => {
-  Item.findById(req.params.id)
-    .then((item) => item.remove())
+  Item.findByIdAndRemove(req.params.id)
     .then(() => res.json({ success: true }))
     .catch((err) => res.status(404).json({ success: false }));
 });

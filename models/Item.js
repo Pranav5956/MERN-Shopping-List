@@ -6,6 +6,11 @@ const itemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  purchased: {
+    type: Boolean,
+    default: false,
+  },
+  addedBy: { type: String, required: true },
   date: {
     type: Date,
     default: Date.now,

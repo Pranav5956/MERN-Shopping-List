@@ -9,6 +9,7 @@ import {
   Container,
 } from "reactstrap";
 import { useSelector } from "react-redux";
+import { ShoppingCartTwoTone } from "@material-ui/icons";
 
 import RegisterModal from "./auth/RegisterModal";
 import LoginModal from "./auth/LoginModal";
@@ -37,7 +38,7 @@ function AppNavbar() {
     <Fragment>
       <NavItem>
         <span className="navbar-text mr-3">
-          <strong>{username && `Welcome ${username}`}</strong>
+          <strong>{username && `Welcome, ${username}!`}</strong>
         </span>
       </NavItem>
       <NavItem>
@@ -47,10 +48,16 @@ function AppNavbar() {
   );
 
   return (
-    <Fragment>
-      <Navbar color="dark" dark expand="sm" className="mb-5">
+    <Fragment className="appNavbar">
+      <Navbar color="dark" dark expand="md" className="mb-5">
         <Container>
-          <NavbarBrand href="/">Shopping List</NavbarBrand>
+          <NavbarBrand href="/">
+            <ShoppingCartTwoTone
+              style={{ fontSize: "2rem" }}
+              className="mr-3"
+            />
+            Shopping List
+          </NavbarBrand>
           <NavbarToggler onClick={toggle}></NavbarToggler>
           <Collapse isOpen={isOpen} navbar>
             <Nav className="ml-auto" navbar>

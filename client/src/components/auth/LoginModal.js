@@ -12,6 +12,7 @@ import {
   Alert,
 } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
+import { PersonOutlineOutlined } from "@material-ui/icons";
 
 import { loginAction } from "../../actions/authActions";
 import { clearErrorsAction } from "../../actions/errorActions";
@@ -36,7 +37,7 @@ function LoginModal() {
       setMessage("");
       toggleModal();
     }
-  }, [errorState.msg, isOpen, isAuthenticated]);
+  }, [errorState, isOpen, isAuthenticated]);
 
   const toggleModal = () => {
     if (message) {
@@ -56,10 +57,11 @@ function LoginModal() {
   return (
     <Fragment>
       <NavLink onClick={toggleModal} href="#">
+        <PersonOutlineOutlined className="mr-1" />
         Login
       </NavLink>
 
-      <Modal isOpen={isOpen} toggle={toggleModal}>
+      <Modal isOpen={isOpen} toggle={toggleModal} fade centered>
         <ModalHeader toggle={toggleModal}>Login</ModalHeader>
         <ModalBody>
           {message && <Alert color="danger">{message}</Alert>}

@@ -12,6 +12,7 @@ import {
   Alert,
 } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
+import { PersonAddOutlined } from "@material-ui/icons";
 
 import { registerAction } from "../../actions/authActions";
 import { clearErrorsAction } from "../../actions/errorActions";
@@ -62,10 +63,11 @@ function RegisterModal() {
   return (
     <Fragment>
       <NavLink onClick={toggleModal} href="#">
+        <PersonAddOutlined className="mr-1" />
         Register
       </NavLink>
 
-      <Modal isOpen={isOpen} toggle={toggleModal}>
+      <Modal isOpen={isOpen} toggle={toggleModal} fade centered>
         <ModalHeader toggle={toggleModal}>Register</ModalHeader>
         <ModalBody>
           {message && <Alert color="danger">{message}</Alert>}

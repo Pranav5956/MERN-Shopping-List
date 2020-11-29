@@ -11,6 +11,7 @@ import {
   REGISTER_FAIL,
 } from "./types";
 import { returnErrorsAction } from "./errorActions";
+import { getItemsAction } from "./itemActions";
 
 // Check token and load user
 export const loadUserAction = () => (dispatch, getState) => {
@@ -19,7 +20,10 @@ export const loadUserAction = () => (dispatch, getState) => {
 
   axios
     .get("/api/auth/user", tokenConfig(getState))
-    .then((res) => dispatch({ type: USER_LOADED, payload: res.data }))
+    .then((res) => {
+      dispatch({ type: USER_LOADED, payload: res.data });
+      dispatch(getItemsAction());
+    })
     .catch((err) => {
       dispatch(returnErrorsAction(err.response.data.msg, err.response.status));
       dispatch({ type: AUTH_ERROR });
@@ -29,12 +33,16 @@ export const loadUserAction = () => (dispatch, getState) => {
 // Register user
 export const registerAction = ({ name, email, password }) => (dispatch) => {
   // Headers
+  dispatch({ type: USER_LOADING });
   const config = { headers: { "Content-Type": "Application/json" } };
   const body = JSON.stringify({ name, email, password });
 
   axios
     .post("/api/users", body, config)
-    .then((res) => dispatch({ type: REGISTER_SUCCESS, payload: res.data }))
+    .then((res) => {
+      dispatch({ type: REGISTER_SUCCESS, payload: res.data });
+      dispatch(getItemsAction());
+    })
     .catch((err) => {
       dispatch(
         returnErrorsAction(
@@ -50,12 +58,16 @@ export const registerAction = ({ name, email, password }) => (dispatch) => {
 // Login user
 export const loginAction = ({ email, password }) => (dispatch) => {
   // Headers
+  dispatch({ type: USER_LOADING });
   const config = { headers: { "Content-Type": "Application/json" } };
   const body = JSON.stringify({ email, password });
 
   axios
     .post("/api/auth", body, config)
-    .then((res) => dispatch({ type: LOGIN_SUCCESS, payload: res.data }))
+    .then((res) => {
+      dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+      dispatch(getItemsAction());
+    })
     .catch((err) => {
       dispatch(
         returnErrorsAction(

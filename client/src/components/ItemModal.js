@@ -10,6 +10,8 @@ import {
   Input,
 } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { AddShoppingCartTwoTone } from "@material-ui/icons";
+
 import { addItemAction } from "../actions/itemActions";
 
 function ItemModal() {
@@ -40,14 +42,18 @@ function ItemModal() {
         <Button
           color="dark"
           style={{ marginBottom: "2rem" }}
-          onClick={toggleModal}>
-          Add Item
+          onClick={toggleModal}
+          block>
+          <AddShoppingCartTwoTone className="mr-2" />
+          Add Item to Shopping List
         </Button>
       ) : (
-        <h4 className="mb-3 ml-4">Please log in to manage items</h4>
+        <h2 className="mb-3 ml-4 text-center">
+          Get started with Shopping List!
+        </h2>
       )}
 
-      <Modal isOpen={isOpen} toggle={toggleModal}>
+      <Modal isOpen={isOpen} toggle={toggleModal} fade centered>
         <ModalHeader toggle={toggleModal}>Add To Shopping List</ModalHeader>
         <ModalBody>
           <Form onSubmit={onSubmit}>
